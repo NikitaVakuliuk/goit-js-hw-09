@@ -1,3 +1,5 @@
+import SLB from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const images = [
   {
@@ -44,6 +46,8 @@ const images = [
   },
   {
     preview:
+      '-> https://cdn.pixabay.com/photo/2019/05/17/09/27/the-alps-4209272__340.jpg',
+    preview:
       'https://cdn.pixabay.com/photo/2019/05/17/09/27/the-alps-4209272__340.jpg',
     original:
       'https://cdn.pixabay.com/photo/2019/05/17/09/27/the-alps-4209272_1280.jpg',
@@ -65,34 +69,29 @@ const images = [
   },
 ];
 
+const gallery = document.querySelector('.gallery');
 
-import SimpleLightbox from 'simplelightbox';
-import 'simplelightbox/dist/simple-lightbox.min.css';
+const oneImage = ({ preview, original, description }) => {
+  return `<li class="gallery-item">
+    <a class="gallery-link" href="${original}">
+      <img
+        class="gallery-image"
+        src="${preview}"
+        alt="${description}"
+      />
+    </a>
+  </li>`;
+};
 
+const allImgs = (data) => {
+  return data.map(oneImage).join('');
+};
 
-const galleryList = document.querySelector('.gallery');
+const markup = allImgs(images);
+gallery.insertAdjacentHTML('beforeend', markup);
 
-
-const galleryMarkup = images
-  .map(
-    ({ preview, original, description }) => `
-      <li class="gallery-item">
-        <a class="gallery-link" href="${original}">
-          <img 
-            class="gallery-image" 
-            src="${preview}" 
-            alt="${description}" 
-          />
-        </a>
-      </li>
-    `
-  )
-  .join('');
-
-
-galleryList.insertAdjacentHTML('beforeend', galleryMarkup);
-
-const lightbox = new SimpleLightbox('.gallery a', {
+new SLB('.gallery a', {
+  captions: true,
   captionsData: 'alt',
   captionDelay: 250,
 });
